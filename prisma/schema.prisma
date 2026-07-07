@@ -1,0 +1,118 @@
+// Forge — workout tracker schema
+// Postgres (Neon) + Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String           @id @default(cuid())
+  email     String           @unique
+  password  String // bcrypt hash
+  name      String?
+  createdAt DateTime         @default(now())
+  routines  Routine[]
+  sessions  WorkoutSession[]
+  goals     Goal[]
+}
+
+// Seeded library. Shared and read-only for users.
+// `section` is how the category page groups things: warmup | main | cooldown.
+// `muscleGroup` is the browse bucket: chest, shoulders, biceps, triceps,
+// forearms, back, core, legs, neck.
+model Exercise {
+  id               String            @id // e.g. "Barbell_Bench_Press_-_Medium_Grip"
+  name             String
+  muscleGroup      String
+  section          String
+  type             String // dataset category: strength | stretching | plyometrics | warmup ...
+  force            String?
+  level            String?
+  mechanic         String?
+  equipment        String?
+  primaryMuscles   String[]
+  secondaryMuscles String[]
+  instructions     String[]
+  images           String[] // relative paths; prefix with IMAGE_BASE
+  videoUrl         String? // optional embed (e.g. YouTube id)
+  routineItems     RoutineExercise[]
+  sessions         WorkoutSession[]
+
+  @@index([muscleGroup, section])
+  @@index([section])
+}
+
+model Routine {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime     @default(now())
+  days      RoutineDay[]
+
+  @@index([userId])
+}
+
+model RoutineDay {
+  id        String            @id @default(cuid())
+  routineId String
+  routine   Routine           @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  label     String // "Push", "Monday", "Leg day"
+  order     Int
+  exercises RoutineExercise[]
+}
+
+model RoutineExercise {
+  id         String     @id @default(cuid())
+  dayId      String
+  day        RoutineDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise   @relation(fields: [exerciseId], references: [id])
+  order      Int
+  targetSets Int?
+  targetReps Int?
+}
+
+// One logged workout of one exercise. The "beat last time" recall is just the
+// most recent WorkoutSession for (userId, exerciseId).
+model WorkoutSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId  String
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  performedAt DateTime @default(now())
+  notes       String?
+  sets        SetLog[]
+
+  @@index([userId, exerciseId, performedAt])
+}
+
+model SetLog {
+  id        String         @id @default(cuid())
+  sessionId String
+  session   WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  order     Int
+  weightKg  Float?
+  reps      Int?
+  rpe       Float?
+}
+
+// A dated note / goal. Surfaced on the home screen when its date is today.
+model Goal {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  text      String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, date])
+}
