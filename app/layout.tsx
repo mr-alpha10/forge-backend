@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import RegisterSW from "@/components/RegisterSW";
+
+export const viewport = {
+  themeColor: "#06060A",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "Forge — workout tracker",
@@ -17,7 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <RegisterSW />
+        {children}
+      </body>
     </html>
   );
 }
