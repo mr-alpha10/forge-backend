@@ -8,3 +8,5 @@
 .DS_Store
 .vercel
 next-env.d.ts
+.vercel
+.env*

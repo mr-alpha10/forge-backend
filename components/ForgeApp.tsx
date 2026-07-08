@@ -91,14 +91,6 @@ export default function ForgeApp() {
         <rect width="100%" height="100%" filter="url(#grain-noise)" />
       </svg>
       <div className="phone">
-        <div className="statusbar">
-          <span>9:41</span>
-          <span className="dots">
-            <i />
-            <i />
-            <span className="bat" />
-          </span>
-        </div>
         <div className="viewport">
           {!ready ? (
             <div className="loading">Forge</div>

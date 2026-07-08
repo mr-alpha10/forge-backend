@@ -27,7 +27,7 @@ body {
 .statusbar .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--txt-3); display: block; }
 .statusbar .dots .bat { width: 20px; height: 10px; border: 1px solid var(--txt-3); border-radius: 2px; position: relative; }
 .statusbar .dots .bat::after { content: ""; position: absolute; inset: 2px; right: 6px; background: var(--accent-2); border-radius: 1px; }
-.viewport { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.viewport { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-top: 12px; }
 .viewport::-webkit-scrollbar { display: none; }
 .screen { padding: 8px 22px 40px; animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
@@ -173,7 +173,7 @@ h2.scr-title { font-family: var(--serif); font-style: italic; font-weight: 500; 
 .calnav button:hover { color: var(--txt); border-color: var(--line-2); }
 .calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .dow { text-align: center; font-size: 10px; font-family: var(--mono); color: var(--txt-3); padding-bottom: 6px; }
-.cell { aspect-ratio: 1/1; border-radius: 10px; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--txt-2); cursor: pointer; position: relative; font-family: var(--mono); }
+.cell { height: 40px; border-radius: 10px; border: 1px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--txt-2); cursor: pointer; position: relative; font-family: var(--mono); }
 .cell.pad { cursor: default; }
 .cell:not(.pad):hover { border-color: var(--line-2); }
 .cell.today { color: var(--accent-2); border-color: rgba(124,58,237,.4); }
