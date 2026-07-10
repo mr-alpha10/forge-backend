@@ -55,10 +55,8 @@ export default function ForgeApp() {
   }, []);
 
   const push = useCallback((next: Screen) => {
-    setStack((s) => {
-      window.history.pushState({ forge: s.length }, "");
-      return [...s, next];
-    });
+    window.history.pushState({ forge: Date.now() }, "");
+    setStack((s) => [...s, next]);
   }, []);
 
   // The single back path: ask the browser to go back. `popstate` then pops
@@ -68,9 +66,9 @@ export default function ForgeApp() {
 
   // Replace the top of the stack without adding history (used when a screen
   // supersedes itself, e.g. saving a log returns to the same detail screen).
-  const replaceTop = useCallback((next: Screen) => {
-    setStack((s) => [...s.slice(0, -1), next]);
-  }, []);
+  // const replaceTop = useCallback((next: Screen) => {
+  //   setStack((s) => [...s.slice(0, -1), next]);
+  // }, []);
 
   useEffect(() => {
     function onPop() {
@@ -161,10 +159,7 @@ export default function ForgeApp() {
             onBack={goBack}
             // After saving, drop the log screen and land back on the detail
             // screen (which refetches and shows the new "last session").
-            onSaved={() => {
-              replaceTop({ name: "detail", exId: screen.exId, group: screen.group });
-              window.history.replaceState({ forge: depthRef.current - 1 }, "");
-            }}
+            onSaved={() => window.history.back()}
           />
         );
       case "calendar":
