@@ -15,7 +15,16 @@ body {
   display: flex; align-items: center; justify-content: center; padding: 24px 16px;
   background-image: radial-gradient(60% 50% at 50% 0%, rgba(124, 58, 237, 0.1), transparent 70%);
 }
-.grain { position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.05; mix-blend-mode: screen; }
+.grain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
 .phone {
   position: relative; width: 390px; max-width: 100%; height: min(840px, 92vh);
   background: var(--bg); border: 1px solid var(--line-2); border-radius: 46px;
@@ -309,7 +318,7 @@ h2.scr-title { font-family: var(--serif); font-style: italic; font-weight: 500; 
 .bg-aura {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
   background: var(--bg);
@@ -318,8 +327,8 @@ h2.scr-title { font-family: var(--serif); font-style: italic; font-weight: 500; 
 .bg-aura span {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.5;
+  filter: blur(50px);
+  opacity: 1;
   will-change: transform;
 }
 
